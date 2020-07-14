@@ -108,7 +108,7 @@ install_prerequisties ()
 get_astpp_source ()
 {
         cd /opt
-        git clone -b v4.0.1 https://github.com/hanguyentieuyen/ASTPP.git 
+        git clone  https://github.com/hanguyentieuyen/ASTPP.git
 }
 
 #License Acceptence
@@ -328,6 +328,7 @@ normalize_astpp ()
 		crontab $CRONPATH
         touch /var/log/astpp/astpp.log
         touch /var/log/astpp/astpp_email.log
+	chmod -Rf 755 $ASTPP_SOURCE_DIR
         chmod 777 /var/log/astpp/astpp.log
         chmod 777 /var/log/astpp/astpp_email.log
         sed -i "s#dbpass = <PASSSWORD>#dbpass = ${ASTPPUSER_MYSQL_PASSWORD}#g" ${ASTPPDIR}astpp-config.conf
@@ -460,7 +461,6 @@ bantime = -1
 ignoreip = 127.0.0.0/8 
 # Override /etc/fail2ban/jail.d/00-firewalld.conf:
 banaction = iptables-multiport
-
 [ssh]
 enabled  = true
 action   = iptables-allports[name=sshd, protocol=all]
@@ -499,7 +499,6 @@ maxretry = 5
 findtime = 600
 bantime  = 3600
 #          sendmail-whois[name=FreeSwitch, dest=root, sender=fail2ban@example.org] #no smtp server installed
-
 [freeswitch-ip-tcp]
 enabled  = false
 port     = 5060
@@ -511,7 +510,6 @@ action   = iptables-multiport[name=freeswitch-ip-tcp, port="%(port)s", protocol=
 maxretry = 1
 findtime = 30
 bantime  = 86400
-
 [freeswitch-ip-udp]
 enabled  = false
 port     = 5060
@@ -523,7 +521,6 @@ action   = iptables-multiport[name=freeswitch-ip-udp, port="%(port)s", protocol=
 maxretry = 1
 findtime = 30
 bantime  = 86400
-
 [sip-auth-failure]
 enabled  = true
 port     = 5060
@@ -535,7 +532,6 @@ action   = iptables-multiport[name=sip-auth-failure, port="%(port)s", protocol=a
 maxretry = 3
 findtime = 30
 bantime  = 7200
-
 [sip-auth-challenge]
 enabled  = true
 port     = 5060
@@ -567,7 +563,6 @@ bantime = -1
 ignoreip = 127.0.0.0/8 
 # Override /etc/fail2ban/jail.d/00-firewalld.conf:
 banaction = iptables-multiport
-
 [sshd]
 enabled  = true
 action   = iptables-allports[name=sshd, protocol=all]
@@ -606,7 +601,6 @@ maxretry = 5
 findtime = 600
 bantime  = 3600
 #          sendmail-whois[name=FreeSwitch, dest=root, sender=fail2ban@example.org] #no smtp server installed
-
 [freeswitch-ip-tcp]
 enabled  = false
 port     = 5060
@@ -618,7 +612,6 @@ action   = iptables-multiport[name=freeswitch-ip-tcp, port="%(port)s", protocol=
 maxretry = 1
 findtime = 30
 bantime  = 86400
-
 [freeswitch-ip-udp]
 enabled  = false
 port     = 5060
@@ -630,7 +623,6 @@ action   = iptables-multiport[name=freeswitch-ip-udp, port="%(port)s", protocol=
 maxretry = 1
 findtime = 30
 bantime  = 86400
-
 [sip-auth-failure]
 enabled  = true
 port     = 5060
@@ -642,7 +634,6 @@ action   = iptables-multiport[name=sip-auth-failure, port="%(port)s", protocol=a
 maxretry = 3
 findtime = 30
 bantime  = 7200
-
 [sip-auth-challenge]
 enabled  = true
 port     = 5060
@@ -687,27 +678,22 @@ check process mysqld with pidfile /var/run/mysqld/mysqld.pid
     stop program = "/bin/systemctl stop mysql"
 if failed host 127.0.0.1 port 3306 then restart
 if 5 restarts within 5 cycles then timeout
-
 #------------Fail2ban
 check process fail2ban with pidfile /var/run/fail2ban/fail2ban.pid
     start program = "/bin/systemctl start fail2ban"
     stop program = "/bin/systemctl stop fail2ban"
-
 # ---- FreeSWITCH ----
 check process freeswitch with pidfile /var/run/freeswitch/freeswitch.pid
     start program = "/bin/systemctl start freeswitch"
     stop program  = "/bin/systemctl stop freeswitch"
-
 #-------nginx----------------------
 check process nginx with pidfile /var/run/nginx.pid
     start program = "/bin/systemctl start nginx" with timeout 30 seconds
     stop program  = "/bin/systemctl stop nginx"
-
 #-------php-fpm----------------------
 check process php7.3-fpm with pidfile /var/run/php/php7.3-fpm.pid
     start program = "/bin/systemctl start php7.3-fpm" with timeout 30 seconds
     stop program  = "/bin/systemctl stop php7.3-fpm"
-
 #--------system
 check system localhost
     if loadavg (5min) > 8 for 4 cycles then alert
@@ -717,7 +703,6 @@ check system localhost
     if cpu usage (user) > 80% for 4 cycles then alert
     if cpu usage (system) > 20% for 4 cycles then alert
     if cpu usage (wait) > 20% for 4 cycles then alert
-
 check filesystem "root" with path /
     if space usage > 80% for 1 cycles then alert' >> /etc/monit/monitrc
 
@@ -740,17 +725,14 @@ check process mysqld with pidfile /var/run/mysqld/mysqld.pid
     stop program = "/bin/systemctl stop mysqld"
 if failed host 127.0.0.1 port 3306 then restart
 if 5 restarts within 5 cycles then timeout
-
 #------------Fail2ban
 check process fail2ban with pidfile /var/run/fail2ban/fail2ban.pid
     start program = "/bin/systemctl start fail2ban"
     stop program = "/bin/systemctl stop fail2ban"
-
 # ---- FreeSWITCH ----
 check process freeswitch with pidfile /var/run/freeswitch/freeswitch.pid
     start program = "/bin/systemctl start freeswitch"
     stop program  = "/bin/systemctl stop freeswitch"
-
 #-------nginx----------------------
 check process nginx with pidfile /var/run/nginx.pid
     start program = "/bin/systemctl start nginx" with timeout 30 seconds
@@ -760,7 +742,6 @@ check process nginx with pidfile /var/run/nginx.pid
 check process php-fpm with pidfile /var/run/php-fpm/php-fpm.pid
     start program = "/bin/systemctl start php-fpm" with timeout 30 seconds
     stop program  = "/bin/systemctl stop php-fpm"
-
 #--------system
 check system localhost
     if loadavg (5min) > 8 for 4 cycles then alert
@@ -770,7 +751,6 @@ check system localhost
     if cpu usage (user) > 80% for 4 cycles then alert
     if cpu usage (system) > 20% for 4 cycles then alert
     if cpu usage (wait) > 20% for 4 cycles then alert
-
 check filesystem "root" with path /
     if space usage > 80% for 1 cycles then alert' >> /etc/monitrc
 systemctl restart monit
@@ -859,4 +839,3 @@ start_installation ()
         echo "******************************************************************************************"
 }
 start_installation
-
