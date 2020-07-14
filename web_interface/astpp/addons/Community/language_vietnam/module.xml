@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon>
+	<tech_name>language_vietnam</tech_name>
+	<name>VietNam Language</name>
+	<description>Add Vietnam Language Support</description>		
+	<icon>static/images/language_vietnam.png</icon>
+	<version>1.0.0</version>
+	<license>Community</license>	
+	<author>tieuyen@athlsolutions.com</author>
+	<status>production</status>
+</addon>
